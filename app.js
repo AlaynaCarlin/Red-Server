@@ -7,6 +7,8 @@ const controllers = require("./controllers");
 const app = Express();
 
 //middleware
+// ! makes server able to read the json data
+app.use(Express.json()); 
 
 //endpoints
 app.use('/post', controllers.postController);
