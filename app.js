@@ -2,6 +2,7 @@
 const Express = require ("express");
 const dbConnection = require("./db");
 const controllers = require("./controllers");
+require("dotenv").config();
 
 //instantiation
 const app = Express();
@@ -13,9 +14,7 @@ app.use(Express.json());
 //endpoints
 app.use('/post', controllers.postController);
 app.use('/user', controllers.userController);
-app.use('/test', (req, res) => {
-    res.send('This is a message from the server!')
-});
+app.use(require("./middleware/validate-jwt"));
 
 //!
 // app.listen(3000, () => {
