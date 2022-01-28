@@ -4,7 +4,7 @@ const { models } = require('../models');
 let validateJWT = require("../middleware/validate-jwt");
 
 router.post('/post', validateJWT, async (req, res) => {
-    const {content, postId} = req.body.comment;
+    const { content, postId } = req.body.comment;
 
     try {
         await models.CommentsModel.create({
@@ -12,14 +12,14 @@ router.post('/post', validateJWT, async (req, res) => {
             postId: postId,
             userId: req.user.id
         })
-        .then(
-            comment => {
-                res.status(201).json({
-                    comment: comment,
-                    message: 'comment created'
-                });
-            }
-        )
+            .then(
+                comment => {
+                    res.status(201).json({
+                        comment: comment,
+                        message: 'comment created'
+                    });
+                }
+            )
     } catch (err) {
         res.status(500).json({
             error: `failed to create post: ${err}`
@@ -28,9 +28,9 @@ router.post('/post', validateJWT, async (req, res) => {
 });
 
 router.put('/update/:id', validateJWT, async (req, res) => {
-    const {content} = req.body.comment;
+    const { content } = req.body.comment;
     const commentId = req.params.id;
-    const {id} = req.user;
+    const { id } = req.user;
 
     const query = {
         where: {
@@ -51,32 +51,54 @@ router.put('/update/:id', validateJWT, async (req, res) => {
             query: query
         });
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json({ error: err });
         message = 'error updating post'
     }
 });
 
 router.delete('/delete/:id', validateJWT, async (req, res) => {
     const commentId = req.params.id;
-    const {id} = req.user;
+    const { id } = req.user;
 
-    const query = {
-        where: {
-            id: commentId,
-            userId: id
+    if (req.user.admin) {
+        const query = {
+            where: {
+                id: commentId
+            }
         }
-    };
 
-    try {
-        const deleteComment = await models.CommentsModel.destroy(query);
-        res.status(200).json({
-            message: `${deleteComment} Comment deleted`,
-            query: query
-        });
-    } catch (err) {
-        res.status(500).json({error: err});
-        message = 'error deleting'
+        try {
+            const deleteComment = await models.CommentsModel.destroy(query);
+            res.status(200).json({
+                message: `${deleteComment} Comment deleted`,
+                query: query
+            });
+        } catch (err) {
+            res.status(500).json({ error: err });
+            message = `error deleting: ${err}`
+        }
+
+    } else {
+        const query = {
+            where: {
+                id: commentId,
+                userId: id
+            }
+        }
+
+        try {
+            const deleteComment = await models.CommentsModel.destroy(query);
+            res.status(200).json({
+                message: `${deleteComment} Comment deleted`,
+                query: query
+            });
+        } catch (err) {
+            res.status(500).json({ error: err });
+            message = 'error deleting'
+        }
+
     }
+
 });
 
 module.exports = router;
