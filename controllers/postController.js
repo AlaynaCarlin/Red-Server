@@ -64,28 +64,48 @@ router.delete('/delete/:id', validateJWT, async (req, res) => {
     const postId = req.params.id;
     const { id } = req.user;
 
-    const query = {
-        where: {
-            id: postId,
-            userId: id
-        }
-    };
+    if (req.user.admin) {
+        const query = {
+            where: {
+                id: postId
+            }
+        };
 
-    try {
-        const deletePost = await models.PostsModel.destroy(query);
-        res.status(200).json({
-            message: `${deletePost} post deleted`,
-            query: query
-        });
-    } catch (err) {
-        res.status(500).json({ error: err });
-        message = 'error deleting'
+        try {
+            const deletePost = await models.PostsModel.destroy(query);
+            res.status(200).json({
+                message: `${deletePost} post deleted`,
+                query: query
+            });
+        } catch (err) {
+            res.status(500).json({ error: err });
+            message = 'error deleting'
+        }
+    } else {
+        const query = {
+            where: {
+                id: postId,
+                userId: id
+            }
+        };
+
+        try {
+            const deletePost = await models.PostsModel.destroy(query);
+            res.status(200).json({
+                message: `${deletePost} post deleted`,
+                query: query
+            });
+        } catch (err) {
+            res.status(500).json({ error: err });
+            message = 'error deleting'
+        }
     }
 });
 
+
 // see post and comments
 router.get('/:id', validateJWT, async (req, res) => {
-    const  postId  = req.params.id;
+    const postId = req.params.id;
     console.log(`PostId --> ${postId}`)
 
     try {
@@ -134,21 +154,3 @@ router.get('/search', validateJWT, async (req, res) => {
 
 
 module.exports = router;
-
-
-//     const{product, brand, content} = req.body.post;
-//     // const {id} = req.user;
-//     const postEntry = {
-//         product,
-//         brand,
-//         content
-//     }
-
-//     try {
-//         const newPost = await models.PostsModel.create(postEntry)
-//        res.status(200).json(newPost)
-//     } catch (err) {
-//         res.status(500).json({
-//             error: `Failed to create post: ${err}`
-//         });
-//     };

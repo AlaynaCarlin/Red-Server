@@ -3,6 +3,7 @@ const { models } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UniqueConstraintError } = require("sequelize/lib/errors");
+const validateJWT = require('../middleware/validate-jwt');
 
 router.post('/signup', async (req, res) => {
     const { username, admin, password } = req.body.users;
@@ -70,6 +71,31 @@ router.post("/login", async (req, res) => {
         res.status(500).json({
             message: "Failed to log user in"
         })
+    }
+});
+
+router.delete('/delete/:id', validateJWT, async (req, res) => {
+    const userId = req.params.id;
+
+    if (req.user.admin) {
+        const query = {
+            where: {
+                id: userId
+            }
+        };
+
+        try {
+            const deleteUser = await models.UsersModel.destroy(query);
+            res.status(200).json({
+                message: `${deleteUser} user deleted`,
+                query: query
+            });
+        } catch (err) {
+            res.status(500).json({error: err});
+            message = 'error deleting'
+        }
+    } else {
+        res.status(200).json({message:'Action not Authorized'});
     }
 });
 
