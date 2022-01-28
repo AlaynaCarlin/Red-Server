@@ -12,6 +12,7 @@ const app = Express();
 app.use(Express.json()); 
 
 //endpoints
+app.use('/comment', controllers.commentController);
 app.use('/post', controllers.postController);
 app.use('/user', controllers.userController);
 app.use(require("./middleware/validate-jwt"));

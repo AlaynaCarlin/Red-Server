@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken"); // import the jwt package
-const { UsersModel } = require("../models"); // import the user model 
+const { models } = require("../models"); // import the user model 
 
 const validateJWT = async (req, res, next) => { //declare an asynchronous fat arrow function that calls validateJWT and takes 3 params
   if (req.method == "OPTIONS") {//! conditional that checks the method (POST, GET, etc) determines if the request is safe to send
@@ -8,7 +8,8 @@ const validateJWT = async (req, res, next) => { //declare an asynchronous fat ar
     req.headers.authorization && //we want to see of there is data in an authorization header
     req.headers.authorization.includes("Bearer") // and if that string includes the word bearer
   ) {
-    const { authorization } = req.headers; // pulls the authorization header and sets it to a variable // console.log("authorization -->", authorization);
+    const { authorization } = req.headers; // pulls the authorization header and sets it to a variable 
+    // console.log("authorization -->", authorization);
     const payload = authorization // ternary that checks if authorization has a truthy value
       ? jwt.verify(  //! if authorization is truthy, we call the jwt verify method (`jwt.verify(token, secretOrPublicKey, [options, callback])`)
         authorization.includes("Bearer") //? first param in verify method
@@ -17,9 +18,9 @@ const validateJWT = async (req, res, next) => { //declare an asynchronous fat ar
         process.env.JWT_SECRET //? second param in verify method
       ) //!
       : undefined; // if authorization is falsy, payload will receive a value of undefined
-    //* console.log("payload -->", payload);
+    //  console.log("payload -->", payload);
     if (payload) { //? a conditional that will check for a truthy value in payload (payload) = if (payload = true)
-      let foundUser = await UsersModel.findOne({ where: { id: payload.id } }); // uses the findOne method to find the user with the matching id and stores it to foundUser
+      let foundUser = await models.UsersModel.findOne({ where: { id: payload.id } }); // uses the findOne method to find the user with the matching id and stores it to foundUser
       //   console.log("foundUser -->", foundUser);
       if (foundUser) { //* if foundUser has a truthy value
         // console.log("request -->", req);
