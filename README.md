@@ -7,3 +7,4 @@
 * -[1/25/2022]: built out file structure and models 
 * -[1/26/2022]: built out userController. added tokenization and encryption
 * -[1/27/2022]: built out postController and commentController
+* -[1/28/2022]: Added Admin abilities and completed server!!
