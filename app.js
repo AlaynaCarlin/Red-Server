@@ -1,15 +1,17 @@
 // imports
+require("dotenv").config();
 const Express = require ("express");
 const dbConnection = require("./db");
 const controllers = require("./controllers");
-const middleware = require('./middleware');
-require("dotenv").config();
+const middleware = require('./middleware/headers');
+
 
 //instantiation
 const app = Express();
 
 //middleware
-app.use(middleware.CORS);
+app.use(require('./middleware/headers'));
+console.log( typeof process.env.DATABASE_PASSWORD);//string
 // ! makes server able to read the json data
 app.use(Express.json()); 
 
