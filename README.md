@@ -1,8 +1,12 @@
-# Class & Sass Server * Alayna M Carlin
+# Class & Sass Server 
+[server for Class & Sass makeup review app. Users can leave reviews for makeup products they have tried and search other user's posts.]
 
- * https://github.com/AlaynaCarlin, 
- * https://www.linkedin.com/in/alayna-carlin-865326221/, 
- * https://github.com/AlaynaCarlin/AlaynaCarlin.github.io.git
+Technology Used:
+
+             Node.js, PostGreSQL, Sequelize
+
+# Alayna M Carlin
+[github](https://github.com/AlaynaCarlin), [linkedIn](https://www.linkedin.com/in/alayna-carlin-865326221/), [portfolio](https://github.com/AlaynaCarlin/AlaynaCarlin.github.io.git)
  
 * -[1/25/2022]: built out file structure and models 
 * -[1/26/2022]: built out userController. added tokenization and encryption
