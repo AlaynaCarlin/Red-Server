@@ -135,7 +135,7 @@ router.get('/:id', validateJWT, async (req, res) => {
 });
 
 //search for a post
-router.get('/search', validateJWT, async (req, res) => {
+router.get('/', validateJWT, async (req, res) => {
     try {
         const posts = await models.PostsModel.findAll()
         res.status(200).json({
