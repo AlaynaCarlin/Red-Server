@@ -12,3 +12,4 @@ Technology Used:
 * -[1/26/2022]: built out userController. added tokenization and encryption
 * -[1/27/2022]: built out postController and commentController
 * -[1/28/2022]: Added Admin abilities and completed server!!
+* -[2/12/2022]: added a get all users endpoint
