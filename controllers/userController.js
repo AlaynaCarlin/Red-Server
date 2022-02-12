@@ -99,4 +99,20 @@ router.delete('/delete/:id', validateJWT, async (req, res) => {
     }
 });
 
+router.get('/', validateJWT, async (req, res) => {
+
+    if (req.user.admin) {
+        try{
+            const users = await models.UsersModel.findAll()
+            res.status(200).json({
+                users: users
+            });
+        } catch (err) {
+            res.status(500).json({
+                error: `Failed to retrieve users: ${err}`
+            })
+        }
+    }
+})
+
 module.exports = router;
